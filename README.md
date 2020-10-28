@@ -1,3 +1,3 @@
 # Regression-Neural-Network
 
-Based on the Google-Places-Visualization resulting dataset.
+Based on the Google-Places-Dataset
