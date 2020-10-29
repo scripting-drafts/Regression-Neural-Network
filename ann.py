@@ -38,7 +38,7 @@ model.add(Dense(4,activation='relu'))
 model.add(Dense(2))
 model.compile(optimizer='adam',loss='mse')
 
-history = model.fit(x=X_train, y=y_train, validation_data=(X_test, y_test), epochs=600)
+history = model.fit(x=X_train, y=y_train, validation_data=(X_test, y_test), epochs=1600)
 
 test_predictions = model.predict(X_test)
 test_predictions = pd.DataFrame(test_predictions.reshape(74, 2))
