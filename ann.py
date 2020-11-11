@@ -7,8 +7,9 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Dense, Activation
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping
 
-df = pd.read_csv('2020-10-28_00:59:21_barcelona-floristeria.csv', delimiter=';')
+df = pd.read_csv('/home/gerard/2020-10-28_00:59:21_barcelona-floristeria.csv', delimiter=';')
 df = df.drop('address', axis=1).drop('type', axis=1).drop('errors', axis=1)
 
 for row in range(len(df.index)):
@@ -33,12 +34,14 @@ X_test = scaler.transform(X_test)
 model = Sequential()
 
 model.add(Dense(4,activation='relu'))
-model.add(Dense(4,activation='relu'))
-model.add(Dense(4,activation='relu'))
+model.add(Dense(12,activation='relu'))
+model.add(Dense(12,activation='relu'))
 model.add(Dense(2))
 model.compile(optimizer='adam',loss='mse')
 
-history = model.fit(x=X_train, y=y_train, validation_data=(X_test, y_test), epochs=1600)
+early_stop = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=250)
+
+history = model.fit(x=X_train, y=y_train, validation_data=(X_test, y_test), epochs=16000, callbacks=[early_stop])
 
 test_predictions = model.predict(X_test)
 test_predictions = pd.DataFrame(test_predictions.reshape(74, 2))
@@ -46,7 +49,7 @@ pred_df = pd.DataFrame(y_test, columns=['lat', 'lon'])
 pred_df = pd.concat([pred_df, test_predictions], axis=1)
 print(pred_df)
 
-model.save('google_places_model.h5')
+# model.save('google_places_model.h5')
 # later_model = load_model('google_places_model.h5')
 
 losses = pd.DataFrame(history.history)
