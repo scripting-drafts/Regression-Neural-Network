@@ -34,8 +34,7 @@ X_test = scaler.transform(X_test)
 model = Sequential()
 
 model.add(Dense(4,activation='relu'))
-model.add(Dense(4,activation='relu'))
-model.add(Dense(4,activation='relu'))
+model.add(Dense(3,activation='relu'))
 model.add(Dense(2))
 model.compile(optimizer='adam',loss='mse')
 
