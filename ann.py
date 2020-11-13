@@ -21,7 +21,7 @@ df.fillna(value=0, inplace=True)
 X = df[['rate', 'comments']].values
 y = df[['lat', 'lon']].values
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=101)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 scaler = MinMaxScaler()
 
@@ -41,7 +41,7 @@ model.compile(optimizer='adam',loss='mse')
 
 early_stop = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=250)
 
-history = model.fit(x=X_train, y=y_train, validation_data=(X_test, y_test), epochs=16000, callbacks=[early_stop])
+history = model.fit(x=X_train, y=y_train, validation_data=(X_test, y_test), epochs=12000, callbacks=[early_stop])
 
 test_predictions = model.predict(X_test)
 test_predictions = pd.DataFrame(test_predictions.reshape(74, 2))
