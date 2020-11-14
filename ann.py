@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Dense, Activation
+from tensorflow.keras.layers import Dense, Activation, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping
 
@@ -13,7 +13,7 @@ df = pd.read_csv('/home/gerard/2020-10-28_00:59:21_barcelona-floristeria.csv', d
 df = df.drop('address', axis=1).drop('type', axis=1).drop('errors', axis=1)
 
 for row in range(len(df.index)):
-    if 'flor' not in df.loc[row, 'name'] and 'Flor' not in df.loc[row, 'name']:
+    if 'flor' not in df.loc[row, 'name'] and 'Flor' not in df.loc[row, 'name'] or df.loc[row, 'comments'] > 150:
         df = df.drop([row])
 
 df.fillna(value=0, inplace=True)
@@ -39,13 +39,13 @@ model.add(Dense(4,activation='relu'))
 model.add(Dense(2))
 model.compile(optimizer='adam',loss='mse')
 
-early_stop = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=250)
+early_stop = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100)
 
 history = model.fit(x=X_train, y=y_train, validation_data=(X_test, y_test), epochs=12000, callbacks=[early_stop])
 
 test_predictions = model.predict(X_test)
-test_predictions = pd.DataFrame(test_predictions.reshape(74, 2))
-pred_df = pd.DataFrame(y_test, columns=['lat', 'lon'])
+test_predictions = pd.DataFrame(test_predictions.reshape(X_test.shape), columns=['model_predict_lat', 'model_predict_lon'])
+pred_df = pd.DataFrame(y_test, columns=['y_test_lat', 'y_test_lon'])
 pred_df = pd.concat([pred_df, test_predictions], axis=1)
 print(pred_df)
 
