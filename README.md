@@ -1,3 +1,3 @@
 # Regression-Neural-Network
 
-The datasets are taken from my Google-Places-Data-Extraction code
+The datasets were built with my Google-Places-Data-Extraction code
