@@ -12,9 +12,12 @@ from tensorflow.keras.callbacks import EarlyStopping
 df = pd.read_csv('/home/gerard/2020-10-28_00:59:21_barcelona-floristeria.csv', delimiter=';')
 df = df.drop('address', axis=1).drop('type', axis=1).drop('errors', axis=1)
 
-for row in range(len(df.index)):
-    if 'flor' not in df.loc[row, 'name'] and 'Flor' not in df.loc[row, 'name'] or df.loc[row, 'comments'] > 150:
-        df = df.drop([row])
+keywords = ['flor', 'Flor']
+
+df_filter = df.name.isin(keywords)
+df = df[df_filter]
+
+df = df[df.comments < 500]
 
 df.fillna(value=0, inplace=True)
 
