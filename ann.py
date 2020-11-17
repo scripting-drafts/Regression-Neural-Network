@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import seaborn as sns
 import matplotlib.pyplot as plt
 from skmultilearn.model_selection import iterative_train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -34,11 +33,9 @@ X_test = scaler.transform(X_test)
 model = Sequential()
 
 model.add(Dense(2,activation='relu'))
-model.add(Dropout(0.3))
+model.add(Dropout(0.2))
 model.add(Dense(2,activation='relu'))
-model.add(Dropout(0.3))
-model.add(Dense(2,activation='relu'))
-model.add(Dropout(0.3))
+model.add(Dropout(0.2))
 model.add(Dense(2))
 model.compile(optimizer='adam',loss='mse')
 
