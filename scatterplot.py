@@ -1,5 +1,6 @@
 import pandas as pd
 import seaborn as sns
+import numpy as np
 from skmultilearn.model_selection import iterative_train_test_split
 from tensorflow.keras.models import load_model
 
@@ -21,6 +22,24 @@ y = df[['lat', 'lon']].values
 X_train, y_train, X_test, y_test = iterative_train_test_split(X, y, test_size=0.3)
 
 model = load_model('google_places_model.h5')
+
+
+X_test_dic = {}
+X_test_dic['rate'] = []
+X_test_dic['comments'] = []
+count = 0
+
+for test in np.nditer(X_test):
+    if count % 2 == 0:
+        X_test_dic['rate'].append(float(test))
+    else:
+        X_test_dic['comments'].append(float(test))
+    count += 1
+
+for rate, comments in zip(X_test_dic['rate'], X_test_dic['comments']):
+    print(rate, comments)
+    prediction = model.predict(np.array([[rate, comments]]))
+    print(prediction)
 
 test_predictions = model.predict(X_test)
 test_predictions = pd.DataFrame(test_predictions.reshape(X_test.shape), columns=['latitude', 'longitude'])
