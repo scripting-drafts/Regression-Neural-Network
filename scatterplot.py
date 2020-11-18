@@ -23,6 +23,10 @@ X_train, y_train, X_test, y_test = iterative_train_test_split(X, y, test_size=0.
 
 model = load_model('google_places_model.h5')
 
+scaler = MinMaxScaler()
+
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
 X_test_dic = {}
 X_test_dic['rate'] = []
