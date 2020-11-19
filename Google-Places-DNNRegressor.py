@@ -82,10 +82,10 @@ Choose one:
 
 if mode == 1:
     print('Training...')
-    for _ in range(16000):
+    for _ in range(1000):
       r = model.evaluate(train_input_fn,steps=1);
       print('Loss:',r['loss'])
-      model.train(train_input_fn,steps=1)
+      model.train(train_input_fn,steps=1000)
 
 elif mode == 2:
     predictions = model.predict(pred_input_fn)
