@@ -82,7 +82,7 @@ Choose one:
 
 if mode == 1:
     print('Training...')
-    for _ in range(1000):
+    for _ in range(100):
       r = model.evaluate(train_input_fn,steps=1);
       print('Loss:',r['loss'])
       model.train(train_input_fn,steps=1000)
