@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import tensorflow as tf
 from skmultilearn.model_selection import iterative_train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import *
 import logging
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -58,7 +56,7 @@ def pred_input_fn():
         else:
             X_test_dic['comments'].append(float(test))
         count += 1
-        
+
     return X_test_dic
 
 
@@ -66,11 +64,13 @@ rate = tf.feature_column.numeric_column("rate",shape=[1])
 comments = tf.feature_column.numeric_column("comments",shape=[1])
 
 model = tf.estimator.DNNRegressor(
-  hidden_units    = [1024, 512, 256, 128, 64, 32, 16, 8, 4],
+  hidden_units    = [16, 8, 4, 2],
   feature_columns = [rate, comments],
   label_dimension = y_train.shape[1],
   activation_fn   = 'relu',
-  model_dir='./Google-Places-DNNRegressor'
+  dropout         = 0.2,
+  optimizer       = 'Adam',
+  model_dir       = './Google-Places-DNNRegressor'
   )
 
 mode = int(input('''
@@ -81,11 +81,11 @@ Choose one:
 
 
 if mode == 1:
-    print("Training...")
-    for _ in range(100):
+    print('Training...')
+    for _ in range(16000):
       r = model.evaluate(train_input_fn,steps=1);
-      print("Loss:",r["loss"])
-      model.train(train_input_fn,steps=1000)
+      print('Loss:',r['loss'])
+      model.train(train_input_fn,steps=1)
 
 elif mode == 2:
     predictions = model.predict(pred_input_fn)
