@@ -64,7 +64,7 @@ rate = tf.feature_column.numeric_column("rate",shape=[1])
 comments = tf.feature_column.numeric_column("comments",shape=[1])
 
 model = tf.estimator.DNNRegressor(
-  hidden_units    = [16, 8, 4, 2],
+  hidden_units    = [1024, 512, 256, 128],
   feature_columns = [rate, comments],
   label_dimension = y_train.shape[1],
   activation_fn   = 'relu',
